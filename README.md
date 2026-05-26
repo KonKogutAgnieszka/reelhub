@@ -28,6 +28,7 @@ Browse, filter, search and sort through movies with a clean, accessible UI.
 - **Styling:** [Tailwind CSS](https://tailwindcss.com/)
 - **Data fetching:** [TanStack Query](https://tanstack.com/query/)
 - **API:** [The Movie Database (TMDB)](https://www.themoviedb.org/documentation/api)
+- **Validation:** [Zod](https://zod.dev/)
 - **Deployment:** [Vercel](https://vercel.com/)
 
 ## 🚀 Getting started
