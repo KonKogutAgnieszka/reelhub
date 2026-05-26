@@ -1,5 +1,5 @@
 import { tmdbFetch } from './tmdb-client';
-import type { Movie, Paginated } from '../types/movie';
+import type { Movie, MovieDetail, Paginated } from '../types/movie';
 
 interface TmdbMovieRaw {
   id: number;
@@ -12,6 +12,14 @@ interface TmdbMovieRaw {
   vote_count: number;
   popularity: number;
   genre_ids: number[];
+}
+
+interface TmdbMovieDetailRaw extends TmdbMovieRaw {
+  runtime: number | null;
+  tagline: string;
+  genres: { id: number; name: string }[];
+  homepage: string | null;
+  status: string;
 }
 
 interface TmdbPaginatedRaw<T> {
@@ -67,4 +75,29 @@ export async function fetchMovies(params: FetchMoviesParams = {}): Promise<Pagin
     totalPages: raw.total_pages,
     totalResults: raw.total_results,
   };
+}
+
+function mapMovieDetail(raw: TmdbMovieDetailRaw): MovieDetail {
+  return {
+    ...mapMovie(raw),
+    runtime: raw.runtime,
+    tagline: raw.tagline,
+    genres: raw.genres,
+    homepage: raw.homepage,
+    status: raw.status,
+  };
+}
+
+export async function fetchMovieDetail(id: number): Promise<MovieDetail> {
+  const raw = await tmdbFetch<TmdbMovieDetailRaw>(`/movie/${id}`, {
+    params: { language: 'en-US' },
+  });
+  return mapMovieDetail(raw);
+}
+
+export async function fetchRelatedMovies(id: number): Promise<Movie[]> {
+  const raw = await tmdbFetch<TmdbPaginatedRaw<TmdbMovieRaw>>(`/movie/${id}/recommendations`, {
+    params: { language: 'en-US' },
+  });
+  return raw.results.slice(0, 10).map(mapMovie);
 }
