@@ -41,6 +41,7 @@ export interface FetchMoviesParams {
   sortBy?: string;
   withGenres?: string;
   query?: string;
+  year?: number;
 }
 
 export async function fetchMovies(params: FetchMoviesParams = {}): Promise<Paginated<Movie>> {
@@ -54,6 +55,7 @@ export async function fetchMovies(params: FetchMoviesParams = {}): Promise<Pagin
       page: params.page ?? 1,
       sort_by: isSearch ? undefined : (params.sortBy ?? 'popularity.desc'),
       with_genres: params.withGenres,
+      primary_release_year: isSearch ? undefined : params.year,
       query: params.query,
       language: 'en-US',
     },

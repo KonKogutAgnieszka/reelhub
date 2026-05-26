@@ -6,6 +6,8 @@ interface MoviesPageProps {
   searchParams: Promise<{
     sort?: string;
     genre?: string;
+    year?: string;
+    query?: string;
     page?: string;
   }>;
 }
@@ -17,6 +19,8 @@ export default async function MoviesPage({ searchParams }: MoviesPageProps) {
     sortBy: params.sort,
     withGenres: params.genre,
     page: params.page ? Number(params.page) : 1,
+    query: params.query,
+    year: params.year ? Number(params.year) : undefined,
   });
 
   return (

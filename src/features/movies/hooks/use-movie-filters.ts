@@ -1,3 +1,5 @@
+'use client';
+
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import { useCallback } from 'react';
 
@@ -14,6 +16,10 @@ export function useMovieFilters() {
       } else {
         params.delete(key);
       }
+      if (key === 'query') {
+        params.delete('genre');
+        params.delete('year');
+      }
       params.delete('page');
       router.push(`${pathname}?${params.toString()}`);
     },
@@ -23,6 +29,8 @@ export function useMovieFilters() {
   return {
     sort: searchParams.get('sort') ?? '',
     genre: searchParams.get('genre') ?? '',
+    query: searchParams.get('query') ?? '',
+    year: searchParams.get('year') ?? '',
     updateFilter,
   };
 }
