@@ -44,6 +44,8 @@ export interface FetchMoviesParams {
 }
 
 export async function fetchMovies(params: FetchMoviesParams = {}): Promise<Paginated<Movie>> {
+  await new Promise((resolve) => setTimeout(resolve, 3000)); // testing loading page
+  //throw new Error('Test error'); testing error page
   const isSearch = !!params.query;
   const path = isSearch ? '/search/movie' : '/discover/movie';
 
