@@ -80,27 +80,31 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ​`
 src/
-├── app/                  # Next.js App Router (routes, layouts)
-├── features/             # Feature-based modules
-│   └── movies/           # Movie browsing feature
-│       ├── api/          # API client and queries
-│       ├── components/   # Movie-specific UI components
-│       ├── hooks/        # Custom React hooks
-│       └── types/        # Domain types
-└── shared/               # Cross-cutting concerns
-    ├── ui/               # Generic, reusable UI components
-    └── lib/              # Utilities, helpers, env config
+├── app/                  # routes, layouts
+│   └── movies/
+│       └── [id]/         # Movie detail page
+├── features/             # feature-based module
+│   └── movies/
+│       ├── api/          # TMDB client and query functions
+│       ├── components/   # movie UI components
+│       ├── hooks/        # custom hooks
+│       └── types/        # domain types
+└── shared/               # shared components
+├── ui/               # UI components
+└── lib/              # utilities, env config
 ​`
 
 ## 📌 Roadmap
 
 - [x] Project scaffolding
-- [ ] TMDB API client with auth and error handling
-- [ ] Movie list page with server-side rendering
-- [ ] URL-synced filters (genre, sort, search)
-- [ ] Pagination
-- [ ] Movie detail page
+- [x] TMDB API client with auth and error handling
+- [x] Movie list page with server-side rendering
+- [x] URL-synced filters (genre, sort, search)
+- [x] Pagination
+- [x] Movie detail page
 - [ ] Accessibility audit
+- [ ] UI polish
+- [ ] Optimistic updates
 - [ ] Deployment to Vercel
 
 ---
