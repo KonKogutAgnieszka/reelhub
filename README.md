@@ -1,36 +1,109 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🎬 Reelhub
 
-## Getting Started
+A movie browser built with Next.js and TypeScript, powered by the [TMDB API](https://www.themoviedb.org/).
+Browse, filter, search and sort through movies with a clean, accessible UI.
 
-First, run the development server:
+> **Status:** in development
+> **Live demo:** _coming soon_
 
-```bash
+---
+
+## 📑 Table of contents
+
+- [Tech stack](#-tech-stack)
+- [Getting started](#-getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Setup](#setup)
+- [Available scripts](#-available-scripts)
+- [Project structure](#-project-structure)
+- [Roadmap](#-roadmap)
+- [Attribution](#-attribution)
+
+---
+
+## 🛠 Tech stack
+
+- **Framework:** [Next.js 15](https://nextjs.org/) (App Router) + [React 19](https://react.dev/)
+- **Language:** [TypeScript](https://www.typescriptlang.org/) (strict mode)
+- **Styling:** [Tailwind CSS](https://tailwindcss.com/)
+- **Data fetching:** [TanStack Query](https://tanstack.com/query/)
+- **API:** [The Movie Database (TMDB)](https://www.themoviedb.org/documentation/api)
+- **Deployment:** [Vercel](https://vercel.com/)
+
+## 🚀 Getting started
+
+### Prerequisites
+
+- Node.js 20+
+- npm
+- A TMDB API token ([how to get one](https://developer.themoviedb.org/reference/intro/getting-started))
+
+### Setup
+
+​```bash
+
+# 1. Clone the repository
+
+git clone https://github.com/YOUR_USERNAME/reelhub.git
+cd reelhub
+
+# 2. Install dependencies
+
+npm install
+
+# 3. Set up environment variables
+
+cp .env.example .env.local
+
+# Then edit .env.local and add your TMDB token
+
+# 4. Start the dev server
+
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+​```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📜 Available scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Script                 | Description                             |
+| ---------------------- | --------------------------------------- |
+| `npm run dev`          | Start the dev server (with Turbopack)   |
+| `npm run build`        | Build for production                    |
+| `npm run start`        | Run the production build                |
+| `npm run lint`         | Run ESLint                              |
+| `npm run format`       | Format all files with Prettier          |
+| `npm run format:check` | Check formatting without changing files |
 
-## Learn More
+## 📁 Project structure
 
-To learn more about Next.js, take a look at the following resources:
+​`
+src/
+├── app/                  # Next.js App Router (routes, layouts)
+├── features/             # Feature-based modules
+│   └── movies/           # Movie browsing feature
+│       ├── api/          # API client and queries
+│       ├── components/   # Movie-specific UI components
+│       ├── hooks/        # Custom React hooks
+│       └── types/        # Domain types
+└── shared/               # Cross-cutting concerns
+    ├── ui/               # Generic, reusable UI components
+    └── lib/              # Utilities, helpers, env config
+​`
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 📌 Roadmap
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- [x] Project scaffolding
+- [ ] TMDB API client with auth and error handling
+- [ ] Movie list page with server-side rendering
+- [ ] URL-synced filters (genre, sort, search)
+- [ ] Pagination
+- [ ] Movie detail page
+- [ ] Accessibility audit
+- [ ] Deployment to Vercel
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🙏 Attribution
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This product uses the TMDB API but is not endorsed or certified by TMDB.
