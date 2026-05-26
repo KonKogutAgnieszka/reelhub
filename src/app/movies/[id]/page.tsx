@@ -1,19 +1,30 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { notFound } from 'next/navigation';
 import { fetchMovieDetail, fetchRelatedMovies } from '@/src/features/movies/api/movies.queries';
+import { TmdbApiError } from '@/src/features/movies/api/tmdb-client';
 import { MovieGrid } from '@/src/features/movies/components/movie-grid';
+import type { MovieDetail, Movie } from '@/src/features/movies/types/movie';
 
 interface MoviePageProps {
   params: Promise<{ id: string }>;
 }
 
+async function getMovieData(id: number): Promise<{ movie: MovieDetail; related: Movie[] }> {
+  try {
+    const [movie, related] = await Promise.all([fetchMovieDetail(id), fetchRelatedMovies(id)]);
+    return { movie, related };
+  } catch (error) {
+    if (error instanceof TmdbApiError && error.status === 404) {
+      notFound();
+    }
+    throw error;
+  }
+}
+
 export default async function MoviePage({ params }: MoviePageProps) {
   const { id } = await params;
-
-  const [movie, related] = await Promise.all([
-    fetchMovieDetail(Number(id)),
-    fetchRelatedMovies(Number(id)),
-  ]);
+  const { movie, related } = await getMovieData(Number(id));
 
   const posterUrl = movie.posterPath ? `https://image.tmdb.org/t/p/w500${movie.posterPath}` : null;
 
@@ -34,7 +45,7 @@ export default async function MoviePage({ params }: MoviePageProps) {
               className="rounded-lg"
             />
           ) : (
-            <div className="w-[300px] h-[450px] bg-gray-200 rounded-lg flex items-center justify-center text-gray-400">
+            <div className="w-75 h-112.5 bg-gray-200 rounded-lg flex items-center justify-center text-gray-400">
               No poster
             </div>
           )}
