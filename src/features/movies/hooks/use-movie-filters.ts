@@ -20,7 +20,9 @@ export function useMovieFilters() {
         params.delete('genre');
         params.delete('year');
       }
-      params.delete('page');
+      if (key !== 'page') {
+        params.delete('page');
+      }
       router.push(`${pathname}?${params.toString()}`);
     },
     [router, pathname, searchParams],

@@ -1,6 +1,7 @@
 import { fetchMovies } from '@/src/features/movies/api/movies.queries';
 import { MovieGrid } from '@/src/features/movies/components/movie-grid';
 import { MovieFilters } from '@/src/features/movies/components/movie-filters';
+import { Pagination } from '@/src/features/movies/components/pagination';
 
 interface MoviesPageProps {
   searchParams: Promise<{
@@ -33,6 +34,7 @@ export default async function MoviesPage({ searchParams }: MoviesPageProps) {
       </header>
       <MovieFilters />
       <MovieGrid movies={data.results} />
+      <Pagination currentPage={data.page} totalPages={data.totalPages} />
     </main>
   );
 }
