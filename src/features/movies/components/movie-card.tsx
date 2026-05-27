@@ -30,7 +30,7 @@ export function MovieCard({ movie }: MovieCardProps) {
         )}
       </div>
       <div className="p-2 bg-white">
-        <h3 className="font-semibold text-xs line-clamp-1 text-gray-900 group-hover:text-blue-600">
+        <h3 className="font-semibold text-xs line-clamp-1 text-gray-900 group-hover:text-red-600">
           {movie.title}
         </h3>
         <p className="text-xs text-gray-500 mt-0.5">
