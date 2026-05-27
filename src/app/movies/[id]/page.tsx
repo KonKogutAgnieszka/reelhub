@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import Link from 'next/link';
+import { ButtonLink } from '@/src/shared/ui/button-link';
 import { notFound } from 'next/navigation';
 import { fetchMovieDetail, fetchRelatedMovies } from '@/src/features/movies/api/movies.queries';
 import { TmdbApiError } from '@/src/features/movies/api/tmdb-client';
@@ -30,9 +30,9 @@ export default async function MoviePage({ params }: MoviePageProps) {
 
   return (
     <main className="container mx-auto px-4 py-8">
-      <Link href="/movies" className="text-sm text-blue-600 hover:underline mb-6 inline-block">
+      <ButtonLink href="/movies" variant="primary" className="mb-6 inline-block">
         ← Back to movies
-      </Link>
+      </ButtonLink>
 
       <div className="flex gap-8 mb-12">
         <div className="shrink-0">
@@ -64,13 +64,13 @@ export default async function MoviePage({ params }: MoviePageProps) {
 
           <div className="flex flex-wrap gap-2 mb-6">
             {movie.genres.map((genre) => (
-              <span key={genre.id} className="px-3 py-1 bg-gray-100 rounded-full text-sm">
+              <span key={genre.id} className="px-3 py-1 bg-red-600 text-white rounded-full text-sm">
                 {genre.name}
               </span>
             ))}
           </div>
 
-          <p className="text-gray-700 leading-relaxed max-w-2xl">{movie.overview}</p>
+          <p className="text-gray-300 leading-relaxed max-w-2xl">{movie.overview}</p>
         </div>
       </div>
 
