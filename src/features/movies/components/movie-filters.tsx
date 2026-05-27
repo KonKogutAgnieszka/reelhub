@@ -1,7 +1,10 @@
 'use client';
 
 import { useDebouncedCallback } from 'use-debounce';
+
 import { useMovieFilters } from '../hooks/use-movie-filters';
+import { Select } from '@/src/shared/ui/select';
+import { SearchInput } from '@/src/shared/ui/search-input';
 
 const SORT_OPTIONS = [
   { value: 'popularity.desc', label: 'Most Popular' },
@@ -23,7 +26,7 @@ const GENRE_OPTIONS = [
 
 const YEAR_OPTIONS = [
   { value: '', label: 'All Years' },
-  ...Array.from({ length: 10 }, (_, i) => {
+  ...Array.from({ length: 50 }, (_, i) => {
     const year = new Date().getFullYear() - i;
     return { value: String(year), label: String(year) };
   }),
@@ -37,50 +40,29 @@ export function MovieFilters() {
   }, 300);
 
   return (
-    <div className="flex gap-3 mb-6">
-      <input
-        type="search"
-        placeholder="Search movies..."
-        defaultValue={query}
-        onChange={(e) => handleSearch(e.target.value)}
-        className="border rounded px-3 py-1.5 text-sm bg-white w-64"
-      />
-
-      <select
-        value={sort}
-        onChange={(e) => updateFilter('sort', e.target.value)}
-        className="border rounded px-3 py-1.5 text-sm bg-white"
-      >
-        {SORT_OPTIONS.map((option) => (
-          <option key={option.value} value={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </select>
-
-      <select
-        value={genre}
-        onChange={(e) => updateFilter('genre', e.target.value)}
-        className="border rounded px-3 py-1.5 text-sm bg-white"
-      >
-        {GENRE_OPTIONS.map((option) => (
-          <option key={option.value} value={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </select>
-
-      <select
-        value={year}
-        onChange={(e) => updateFilter('year', e.target.value || undefined)}
-        className="border rounded px-3 py-1.5 text-sm bg-white"
-      >
-        {YEAR_OPTIONS.map((option) => (
-          <option key={option.value} value={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </select>
+    <div className="mb-6 max-w-xl">
+      <SearchInput defaultValue={query} onChange={handleSearch} placeholder="Search movies..." />
+      <div className="flex flex-wrap gap-3 mt-4 mb-6">
+        <p>Add filters: </p>
+        <Select
+          value={sort}
+          onChange={(value) => updateFilter('sort', value)}
+          options={SORT_OPTIONS}
+          ariaLabel="Sort movies"
+        />
+        <Select
+          value={genre}
+          onChange={(value) => updateFilter('genre', value || undefined)}
+          options={GENRE_OPTIONS}
+          ariaLabel="Filter by genre"
+        />
+        <Select
+          value={year}
+          onChange={(value) => updateFilter('year', value || undefined)}
+          options={YEAR_OPTIONS}
+          ariaLabel="Filter by year"
+        />
+      </div>
     </div>
   );
 }
