@@ -1,7 +1,7 @@
 import { tmdbFetch } from './tmdb-client';
 import type { Movie, MovieDetail, Paginated } from '../types/movie';
 
-interface TmdbMovieRaw {
+interface TmdbMovieResponse {
   id: number;
   title: string;
   overview: string;
@@ -14,7 +14,7 @@ interface TmdbMovieRaw {
   genre_ids: number[];
 }
 
-interface TmdbMovieDetailRaw extends TmdbMovieRaw {
+interface TmdbMovieDetailResponse extends TmdbMovieResponse {
   runtime: number | null;
   tagline: string;
   genres: { id: number; name: string }[];
@@ -22,14 +22,14 @@ interface TmdbMovieDetailRaw extends TmdbMovieRaw {
   status: string;
 }
 
-interface TmdbPaginatedRaw<T> {
+interface TmdbPaginatedResponse<T> {
   page: number;
   results: T[];
   total_pages: number;
   total_results: number;
 }
 
-function mapMovie(raw: TmdbMovieRaw): Movie {
+function mapMovie(raw: TmdbMovieResponse): Movie {
   return {
     id: raw.id,
     title: raw.title,
@@ -53,12 +53,10 @@ export interface FetchMoviesParams {
 }
 
 export async function fetchMovies(params: FetchMoviesParams = {}): Promise<Paginated<Movie>> {
-  await new Promise((resolve) => setTimeout(resolve, 3000)); // testing loading page
-  //throw new Error('Test error'); testing error page
   const isSearch = !!params.query;
   const path = isSearch ? '/search/movie' : '/discover/movie';
 
-  const raw = await tmdbFetch<TmdbPaginatedRaw<TmdbMovieRaw>>(path, {
+  const raw = await tmdbFetch<TmdbPaginatedResponse<TmdbMovieResponse>>(path, {
     params: {
       page: params.page ?? 1,
       sort_by: isSearch ? undefined : (params.sortBy ?? 'popularity.desc'),
@@ -77,7 +75,7 @@ export async function fetchMovies(params: FetchMoviesParams = {}): Promise<Pagin
   };
 }
 
-function mapMovieDetail(raw: TmdbMovieDetailRaw): MovieDetail {
+function mapMovieDetail(raw: TmdbMovieDetailResponse): MovieDetail {
   return {
     ...mapMovie(raw),
     runtime: raw.runtime,
@@ -89,14 +87,14 @@ function mapMovieDetail(raw: TmdbMovieDetailRaw): MovieDetail {
 }
 
 export async function fetchMovieDetail(id: number): Promise<MovieDetail> {
-  const raw = await tmdbFetch<TmdbMovieDetailRaw>(`/movie/${id}`, {
+  const raw = await tmdbFetch<TmdbMovieDetailResponse>(`/movie/${id}`, {
     params: { language: 'en-US' },
   });
   return mapMovieDetail(raw);
 }
 
 export async function fetchRelatedMovies(id: number): Promise<Movie[]> {
-  const raw = await tmdbFetch<TmdbPaginatedRaw<TmdbMovieRaw>>(`/movie/${id}/recommendations`, {
+  const raw = await tmdbFetch<TmdbPaginatedResponse<TmdbMovieResponse>>(`/movie/${id}/recommendations`, {
     params: { language: 'en-US' },
   });
   return raw.results.slice(0, 10).map(mapMovie);
