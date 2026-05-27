@@ -1,6 +1,7 @@
 'use client';
 
 import { useMovieFilters } from '@/src/features/movies/hooks/use-movie-filters';
+import { Button } from '@/src/shared/ui/button';
 
 interface PaginationProps {
   currentPage: number;
@@ -14,26 +15,26 @@ export function Pagination({ currentPage, totalPages }: PaginationProps) {
   if (maxPage <= 1) return null;
 
   return (
-    <div className="flex items-center justify-center gap-2 mt-8">
-      <button
+    <nav aria-label="Pagination" className="flex items-center justify-center gap-2 mt-8">
+      <Button
+        variant="secondary"
         onClick={() => updateFilter('page', String(currentPage - 1))}
         disabled={currentPage <= 1}
-        className="px-4 py-2 text-sm border rounded disabled:opacity-40 hover:bg-gray-100"
       >
         Previous
-      </button>
+      </Button>
 
       <span className="text-sm text-gray-600">
         Page {currentPage} of {maxPage}
       </span>
 
-      <button
+      <Button
+        variant="secondary"
         onClick={() => updateFilter('page', String(currentPage + 1))}
         disabled={currentPage >= maxPage}
-        className="px-4 py-2 text-sm border rounded disabled:opacity-40 hover:bg-gray-100"
       >
         Next
-      </button>
-    </div>
+      </Button>
+    </nav>
   );
 }
