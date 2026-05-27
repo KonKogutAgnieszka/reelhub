@@ -40,7 +40,7 @@ export async function tmdbFetch<T>(path: string, options: TmdbFetchOptions = {})
     },
   });
   if (!response.ok) {
-    const errorBody = await response.json();
+    const errorBody = await response.text().catch(() => 'Unknown error');
     throw new TmdbApiError(
       response.status,
       response.statusText,

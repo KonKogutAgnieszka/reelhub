@@ -16,6 +16,7 @@ Browse, filter, search and sort through movies with a clean, accessible UI.
   - [Setup](#setup)
 - [Available scripts](#-available-scripts)
 - [Project structure](#-project-structure)
+- [Architecture decisions](#-architecture-decisions)
 - [Roadmap](#-roadmap)
 - [Attribution](#-attribution)
 
@@ -80,18 +81,40 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ​`
 src/
-├── app/                  # routes, layouts
-│   └── movies/
-│       └── [id]/         # Movie detail page
-├── features/             # feature-based module
-│   └── movies/
-│       ├── api/          # TMDB client and query functions
-│       ├── components/   # movie UI components
-│       ├── hooks/        # custom hooks
-│       └── types/        # domain types
-└── shared/               # shared components
-├── ui/               # UI components
-└── lib/              # utilities, env config
+├── app/ # routes, layouts
+│ └── movies/
+│ └── [id]/ # Movie detail page
+├── features/ # feature-based module
+│ └── movies/
+│ ├── api/ # TMDB client and query functions
+│ ├── components/ # movie UI components
+│ ├── hooks/ # custom hooks
+│ └── types/ # domain types
+└── shared/ # shared components
+├── ui/ # UI components
+└── lib/ # utilities, env config
+
+## 🏛 Architecture decisions
+
+### URL-based filter state
+
+Search filters live in URL search params instead of local component React state. I chose this to make filters shareable via link and preserve browser back/forward navigation.
+The server fetches the correct data without client-side state synchronization step. It also eliminate need for AbortControllers - navigation cancells previous render.
+
+**Trade-off:** slightly more hook complexity vs a simple `useState`.
+
+### Feature-based folder structure
+
+Repository is organised by feature rather than by type. Everything related to movies lays in one place - easier to navigate.
+
+**Trade-off:** shared components require discipline about what goes into `shared/` vs stays in the feature folder.
+
+### Typed API layer with snake_case → camelCase mapping
+
+TMDB API returns data in snake_case, while the app internally uses camelCase. I added a dedicated mapping layer (`mapMovie`, `mapMovieDetail`) to transform raw API responses into typed domain models.
+
+---
+
 ​`
 
 ## 📌 Roadmap
