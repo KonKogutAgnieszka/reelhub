@@ -167,7 +167,14 @@ npm run test:run
 - [x] Accessibility audit
 - [x] UI polish
 - [x] Client-side caching with TanStack Query
+- [x] User tests
 - [x] Deployment to Vercel
+
+Future improvments:
+
+- [ ] API Response Validation (Zod) Implement runtime schema checking for TMDB responses to catch breaking changes from the external provider early.
+- [ ] Secure URL Params Parsing
+- [ ] Add more advanced filters and sorting options according to the full TMDB API specification
 
 ---
 
