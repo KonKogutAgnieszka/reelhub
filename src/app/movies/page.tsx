@@ -25,16 +25,12 @@ export default async function MoviesPage({ searchParams }: MoviesPageProps) {
   });
 
   return (
-    <main className="container mx-auto px-4 py-8">
-      <header className="mb-6">
-        <h1 className="text-3xl font-bold">Movies</h1>
-        <p className="text-sm text-gray-500 mt-1" aria-live="polite" aria-atomic="true">
-          Showing {data.results.length} of {data.totalResults} results
-        </p>
-      </header>
-      <MovieFilters />
+    <>
+      <p className="text-sm text-gray-500 mb-6" aria-live="polite" aria-atomic="true">
+        Showing {data.results.length} of {data.totalResults} results
+      </p>
       <MovieGrid movies={data.results} />
-      <Pagination currentPage={data.page} totalPages={data.totalPages} />
-    </main>
+      <Pagination key={data.page} currentPage={data.page} totalPages={data.totalPages} />
+    </>
   );
 }
