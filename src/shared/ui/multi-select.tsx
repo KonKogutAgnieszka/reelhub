@@ -58,6 +58,7 @@ export function MultiSelect({
       <button
         type="button"
         aria-label={ariaLabel}
+        aria-expanded={open}
         disabled={disabled}
         onClick={() => !disabled && setOpen((o) => !o)}
         className="
