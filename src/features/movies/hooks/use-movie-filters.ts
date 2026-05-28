@@ -37,6 +37,7 @@ export function useMovieFilters() {
     genre: searchParams.get('genre') ?? '',
     query: searchParams.get('query') ?? '',
     year: searchParams.get('year') ?? '',
+    page: Number(searchParams.get('page')) ?? 1,
     updateFilter,
     resetFilters,
   };
