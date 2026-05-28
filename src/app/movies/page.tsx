@@ -13,7 +13,9 @@ export default function MoviesPage() {
           <MovieFilters />
         </Suspense>
       </div>
-      <MoviesContent />
+      <Suspense>
+        <MoviesContent />
+      </Suspense>
     </main>
   );
 }
