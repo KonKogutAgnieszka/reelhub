@@ -3,7 +3,7 @@
 A movie browser built with Next.js and TypeScript, powered by the [TMDB API](https://www.themoviedb.org/).
 Browse, filter, search and sort through movies with a clean, accessible UI.
 
-> **Status:** in development
+> **Status:** ready for review  
 > **Live demo:** [reelhub-five.vercel.app](https://reelhub-five.vercel.app/)
 
 ---
@@ -18,6 +18,7 @@ Browse, filter, search and sort through movies with a clean, accessible UI.
 - [Project structure](#-project-structure)
 - [Architecture decisions](#-architecture-decisions)
 - [Accessibility](#-accessibility)
+- [Testing](#-testing)
 - [Roadmap](#-roadmap)
 - [Attribution](#-attribution)
 
@@ -44,27 +45,21 @@ Browse, filter, search and sort through movies with a clean, accessible UI.
 
 ### Setup
 
-​```bash
-
+```bash
 # 1. Clone the repository
-
 git clone https://github.com/YOUR_USERNAME/reelhub.git
 cd reelhub
 
 # 2. Install dependencies
-
 npm install
 
 # 3. Set up environment variables
-
 cp .env.example .env.local
-
 # Then edit .env.local and add your TMDB token
 
 # 4. Start the dev server
-
 npm run dev
-​```
+```
 
 Open [http://localhost:3000](http://localhost:3000) in your browser.
 
@@ -83,33 +78,39 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## 📁 Project structure
 
-​`
+```
 src/
-├── app/ # routes, layouts
-│ └── movies/
-│ └── [id]/ # Movie detail page
-├── features/ # feature-based module
-│ └── movies/
-│ ├── api/ # TMDB client and query functions
-│ ├── components/ # movie UI components
-│ ├── hooks/ # custom hooks
-│ └── types/ # domain types
-└── shared/ # shared components
-├── ui/ # UI components
-└── lib/ # utilities, env config
+├── app/                        # routes, layouts
+│   ├── api/
+│   │   └── movies/             # Route Handler (TMDB proxy)
+│   └── movies/
+│       ├── [id]/               # Movie detail page
+│       └── page.tsx            # Movies list
+├── features/                   # feature-based modules
+│   └── movies/
+│       ├── api/                # TMDB client and query
+│       ├── components/         # movie UI components
+│       ├── hooks/              # custom hooks
+│       └── types/              # domain types
+└── shared/                     # shared components
+    ├── ui/                     # UI reusable components
+    └── lib/                    # utilities, env config
+
+```
 
 ## 🏛 Architecture decisions
 
 ### URL-based filter state
 
-Search filters live in URL search params instead of local component React state. I chose this to make filters shareable via link and preserve browser back/forward navigation.
-The server fetches the correct data without client-side state synchronization step. It also eliminate need for AbortControllers - navigation cancells previous render.
+Search filters live in URL search params instead of local React state. This makes filters shareable via link, preserves browser back/forward navigation, and gives the app a single source of truth — the URL.
 
-**Trade-off:** slightly more hook complexity vs a simple `useState`.
+TanStack Query picks up param changes through its query key. Rapidly changing filters (e.g. while typing) automatically cancel previous in-flight requests, so I don't need to wire AbortControllers manually.
+
+**Trade-off:** slightly more hook complexity than a simple `useState`.
 
 ### Feature-based folder structure
 
-Repository is organised by feature rather than by type. Everything related to movies lays in one place - easier to navigate.
+Repository is organised by feature rather than by type. Everything related to movies lives in one place — easier to navigate.
 
 **Trade-off:** shared components require discipline about what goes into `shared/` vs stays in the feature folder.
 
@@ -117,9 +118,15 @@ Repository is organised by feature rather than by type. Everything related to mo
 
 TMDB API returns data in snake_case, while the app internally uses camelCase. I added a dedicated mapping layer (`mapMovie`, `mapMovieDetail`) to transform raw API responses into typed domain models.
 
----
+### Client-side caching with TanStack Query
 
-​`
+Movie list fetching uses TanStack Query instead of direct server-side rendering. This improves user experience — if a user returns to already visited filters, results appear instantly without a new request to the API. TMDB data does not update frequently, which makes client-side caching a good fit here.
+
+`keepPreviousData` keeps previous results visible (slightly dimmed) while new data loads, eliminating layout shifts during filter changes.
+
+**Trade-off:** MoviesPage became a Client Component, requiring a `/api/movies` Route Handler to proxy TMDB requests and keep the API token server-side.
+
+---
 
 ## ♿ Accessibility
 
@@ -148,8 +155,6 @@ Tests cover three layers of the application:
 npm run test:run
 ```
 
-See [tests/README.md](./tests/README.md) for more details.
-
 ## 📌 Roadmap
 
 - [x] Project scaffolding
@@ -160,8 +165,8 @@ See [tests/README.md](./tests/README.md) for more details.
 - [x] Movie detail page
 - [x] Unit tests
 - [x] Accessibility audit
-- [ ] UI polish
-- [ ] Optimistic updates
+- [x] UI polish
+- [x] Client-side caching with TanStack Query
 - [x] Deployment to Vercel
 
 ---
@@ -169,3 +174,4 @@ See [tests/README.md](./tests/README.md) for more details.
 ## 🙏 Attribution
 
 This product uses the TMDB API but is not endorsed or certified by TMDB.
+
