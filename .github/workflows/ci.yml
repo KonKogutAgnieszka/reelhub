@@ -24,7 +24,7 @@ jobs:
         run: npm run format:check
 
       - name: Lint
-        run: npm run lint
+        run: npx eslint src --ext .ts,.tsx
 
       - name: Type check
         run: npx tsc --noEmit
