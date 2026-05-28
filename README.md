@@ -31,6 +31,7 @@ Browse, filter, search and sort through movies with a clean, accessible UI.
 - **API:** [The Movie Database (TMDB)](https://www.themoviedb.org/documentation/api)
 - **Validation:** [Zod](https://zod.dev/)
 - **Deployment:** [Vercel](https://vercel.com/)
+- **Testing:\*** [Vitest](https://vitest.dev/)
 
 ## 🚀 Getting started
 
@@ -76,6 +77,8 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 | `npm run lint`         | Run ESLint                              |
 | `npm run format`       | Format all files with Prettier          |
 | `npm run format:check` | Check formatting without changing files |
+| `npm run test`         | Run tests in watch mode                 |
+| `npm run test:run`     | Run tests once (CI)                     |
 
 ## 📁 Project structure
 
@@ -117,6 +120,22 @@ TMDB API returns data in snake_case, while the app internally uses camelCase. I 
 
 ​`
 
+## 🧪 Testing
+
+Tests cover three layers of the application:
+
+- **API layer**
+- **UI layer**
+- **Hook layer**
+
+[tests/README.md](./tests/README.md) for more details.
+
+```bash
+npm run test:run
+```
+
+See [tests/README.md](./tests/README.md) for more details.
+
 ## 📌 Roadmap
 
 - [x] Project scaffolding
@@ -125,10 +144,11 @@ TMDB API returns data in snake_case, while the app internally uses camelCase. I 
 - [x] URL-synced filters (genre, sort, search)
 - [x] Pagination
 - [x] Movie detail page
-- [ ] Accessibility audit
+- [x] Unit tests
+- [x] Accessibility audit
 - [ ] UI polish
 - [ ] Optimistic updates
-- [ ] Deployment to Vercel
+- [x] Deployment to Vercel
 
 ---
 
