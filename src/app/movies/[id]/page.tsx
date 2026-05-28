@@ -29,8 +29,8 @@ export default async function MoviePage({ params }: MoviePageProps) {
 
   return (
     <>
-      <div className="flex gap-8 mb-12">
-        <div className="shrink-0">
+      <div className="flex flex-col sm:flex-row gap-8 mb-12">
+        <div className="shrink-0 w-full sm:w-auto">
           {posterUrl ? (
             <Image
               src={posterUrl}
@@ -38,16 +38,17 @@ export default async function MoviePage({ params }: MoviePageProps) {
               width={250}
               height={375}
               className="rounded-lg"
+              priority
             />
           ) : (
-            <div className="w-62.5 h-93.75 bg-gray-400 rounded-lg flex items-center justify-center text-gray-400">
+            <div className="w-full sm:w-62.5 h-93.75 bg-gray-400 rounded-lg flex items-center justify-center text-gray-400">
               No poster
             </div>
           )}
         </div>
 
         <div>
-          <h1 className="text-4xl font-bold mb-2">{movie.title}</h1>
+          <h1 className="text-2xl sm:text-4xl font-bold mb-2">{movie.title}</h1>
 
           {movie.tagline && <p className="text-gray-400 italic mb-4">{movie.tagline}</p>}
 
