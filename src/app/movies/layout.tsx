@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import { MovieFilters } from '@/src/features/movies/components/movie-filters';
 
 export default function MoviesLayout({ children }: { children: React.ReactNode }) {
@@ -7,7 +8,9 @@ export default function MoviesLayout({ children }: { children: React.ReactNode }
         <h1 className="text-3xl font-bold">Movies</h1>
       </header>
       <div className="min-h-30">
-        <MovieFilters />
+        <Suspense>
+          <MovieFilters />
+        </Suspense>
       </div>
       {children}
     </main>
