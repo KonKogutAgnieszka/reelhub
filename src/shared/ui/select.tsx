@@ -8,15 +8,22 @@ interface SelectProps {
   onChange: (value: string) => void;
   options: SelectOption[];
   ariaLabel: string;
+  disabled?: boolean;
 }
 
-export function Select({ value, onChange, options, ariaLabel }: SelectProps) {
+export function Select({ value, onChange, options, ariaLabel, disabled = false }: SelectProps) {
   return (
     <select
       value={value}
       onChange={(e) => onChange(e.target.value)}
       aria-label={ariaLabel}
-      className="h-9 border border-gray-600 rounded px-3 py-1.5 text-sm bg-gray-800 text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-600"
+      disabled={disabled}
+      className="
+        h-9 rounded border border-gray-600 bg-gray-800 px-3 py-1.5 text-sm text-white
+        focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-600
+        disabled:cursor-not-allowed
+        disabled:opacity-50
+      "
     >
       {options.map((option) => (
         <option key={option.value} value={option.value}>

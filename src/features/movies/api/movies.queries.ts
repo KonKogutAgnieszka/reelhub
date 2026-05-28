@@ -59,11 +59,14 @@ export async function fetchMovies(params: FetchMoviesParams = {}): Promise<Pagin
   const raw = await tmdbFetch<TmdbPaginatedResponse<TmdbMovieResponse>>(path, {
     params: {
       page: params.page ?? 1,
-      sort_by: isSearch ? undefined : (params.sortBy ?? 'popularity.desc'),
-      with_genres: params.withGenres,
-      primary_release_year: isSearch ? undefined : params.year,
-      query: params.query,
       language: 'en-US',
+
+      query: isSearch ? params.query : undefined,
+      year: isSearch ? params.year : undefined,
+
+      sort_by: isSearch ? undefined : (params.sortBy ?? 'popularity.desc'),
+      with_genres: isSearch ? undefined : params.withGenres,
+      primary_release_year: isSearch ? undefined : params.year,
     },
   });
 
@@ -87,7 +90,6 @@ function mapMovieDetail(raw: TmdbMovieDetailResponse): MovieDetail {
 }
 
 export async function fetchMovieDetail(id: number): Promise<MovieDetail> {
-  await new Promise((resolve) => setTimeout(resolve, 2000));
   const raw = await tmdbFetch<TmdbMovieDetailResponse>(`/movie/${id}`, {
     params: { language: 'en-US' },
   });

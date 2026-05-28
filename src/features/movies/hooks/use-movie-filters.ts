@@ -16,10 +16,6 @@ export function useMovieFilters() {
       } else {
         params.delete(key);
       }
-      if (key === 'query') {
-        params.delete('genre');
-        params.delete('year');
-      }
       if (key !== 'page') {
         params.delete('page');
       }
@@ -29,14 +25,20 @@ export function useMovieFilters() {
   );
 
   const resetFilters = useCallback(() => {
-    router.push(pathname);
-  }, [router, pathname]);
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete('sort');
+    params.delete('genre');
+    params.delete('year');
+    params.delete('page');
+    router.push(`${pathname}?${params.toString()}`);
+  }, [router, pathname, searchParams]);
 
   return {
     sort: searchParams.get('sort') ?? '',
     genre: searchParams.get('genre') ?? '',
     query: searchParams.get('query') ?? '',
     year: searchParams.get('year') ?? '',
+    page: Number(searchParams.get('page')) ?? 1,
     updateFilter,
     resetFilters,
   };

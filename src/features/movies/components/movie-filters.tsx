@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 
 import { useMovieFilters } from '../hooks/use-movie-filters';
@@ -25,10 +26,12 @@ const GENRE_OPTIONS = [
   { value: '16', label: 'Animation' },
 ];
 
+const CURRENT_YEAR = new Date().getFullYear();
+
 const YEAR_OPTIONS = [
   { value: '', label: 'All Years' },
   ...Array.from({ length: 50 }, (_, i) => {
-    const year = new Date().getFullYear() - i;
+    const year = CURRENT_YEAR - i;
     return { value: String(year), label: String(year) };
   }),
 ];
@@ -36,42 +39,79 @@ const YEAR_OPTIONS = [
 export function MovieFilters() {
   const { sort, genre, year, query, updateFilter, resetFilters } = useMovieFilters();
 
-  const handleSearch = useDebouncedCallback((value: string) => {
+  const [searchValue, setSearchValue] = useState(query ?? '');
+  const [prevQuery, setPrevQuery] = useState(query ?? '');
+
+  if (query !== prevQuery) {
+    setPrevQuery(query ?? '');
+    setSearchValue(query ?? '');
+  }
+
+  const isSearchMode = !!searchValue.trim();
+
+  const debouncedUpdateQuery = useDebouncedCallback((value: string) => {
     updateFilter('query', value || undefined);
   }, 300);
 
-  const hasFilters = !!(sort !== 'popularity.desc' && sort) || !!genre || !!year || !!query;
+  const handleSearchChange = (value: string) => {
+    setSearchValue(value);
+    debouncedUpdateQuery(value);
+  };
+
+  const handleClearSearch = () => {
+    setSearchValue('');
+    debouncedUpdateQuery.cancel();
+    updateFilter('query', undefined);
+  };
+
+  const hasFilters = (sort && sort !== 'popularity.desc') || !!genre || !!year;
 
   return (
     <div className="mb-6">
-      <SearchInput defaultValue={query} onChange={handleSearch} placeholder="Search movies..." />
-      <div className="flex flex-wrap gap-3 mt-4 mb-6">
-        <p>Add filters: </p>
+      <div className="flex items-center gap-2">
+        <SearchInput
+          value={searchValue}
+          onChange={handleSearchChange}
+          onClear={handleClearSearch}
+          placeholder="Search movies..."
+        />
+      </div>
+
+      <div className="mt-4 mb-2 flex flex-wrap items-center gap-3">
+        <p className="text-sm font-medium text-gray-300">Filters:</p>
+
         <Select
           value={sort}
           onChange={(value) => updateFilter('sort', value)}
           options={SORT_OPTIONS}
           ariaLabel="Sort movies"
+          disabled={isSearchMode}
         />
+
         <MultiSelect
           values={genre ? genre.split(',') : []}
           onChange={(values) => updateFilter('genre', values.length ? values.join(',') : undefined)}
           options={GENRE_OPTIONS}
           ariaLabel="Filter by genre"
           placeholder="All Genres"
+          disabled={isSearchMode}
         />
+
         <Select
           value={year}
           onChange={(value) => updateFilter('year', value || undefined)}
           options={YEAR_OPTIONS}
           ariaLabel="Filter by year"
         />
-        {hasFilters && (
-          <Button variant="secondary" onClick={resetFilters}>
-            Reset filters
-          </Button>
-        )}
+
+        <Button variant="secondary" onClick={resetFilters} disabled={!hasFilters}>
+          Reset filters
+        </Button>
       </div>
+
+      {isSearchMode && (
+        <p className="text-xs text-gray-400">Search mode disables sorting and genre filters.</p>
+      )}
     </div>
   );
 }
