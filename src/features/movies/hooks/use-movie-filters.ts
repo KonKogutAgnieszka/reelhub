@@ -28,11 +28,16 @@ export function useMovieFilters() {
     [router, pathname, searchParams],
   );
 
+  const resetFilters = useCallback(() => {
+    router.push(pathname);
+  }, [router, pathname]);
+
   return {
     sort: searchParams.get('sort') ?? '',
     genre: searchParams.get('genre') ?? '',
     query: searchParams.get('query') ?? '',
     year: searchParams.get('year') ?? '',
     updateFilter,
+    resetFilters,
   };
 }
