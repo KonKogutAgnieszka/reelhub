@@ -94,8 +94,11 @@ export async function fetchMovieDetail(id: number): Promise<MovieDetail> {
 }
 
 export async function fetchRelatedMovies(id: number): Promise<Movie[]> {
-  const raw = await tmdbFetch<TmdbPaginatedResponse<TmdbMovieResponse>>(`/movie/${id}/recommendations`, {
-    params: { language: 'en-US' },
-  });
+  const raw = await tmdbFetch<TmdbPaginatedResponse<TmdbMovieResponse>>(
+    `/movie/${id}/recommendations`,
+    {
+      params: { language: 'en-US' },
+    },
+  );
   return raw.results.slice(0, 10).map(mapMovie);
 }
