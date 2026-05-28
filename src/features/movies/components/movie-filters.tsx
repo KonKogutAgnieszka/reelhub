@@ -4,7 +4,9 @@ import { useDebouncedCallback } from 'use-debounce';
 
 import { useMovieFilters } from '../hooks/use-movie-filters';
 import { Select } from '@/src/shared/ui/select';
+import { MultiSelect } from '@/src/shared/ui/multi-select';
 import { SearchInput } from '@/src/shared/ui/search-input';
+import { Button } from '@/src/shared/ui/button';
 
 const SORT_OPTIONS = [
   { value: 'popularity.desc', label: 'Most Popular' },
@@ -14,7 +16,6 @@ const SORT_OPTIONS = [
 ];
 
 const GENRE_OPTIONS = [
-  { value: '', label: 'All Genres' },
   { value: '28', label: 'Action' },
   { value: '35', label: 'Comedy' },
   { value: '18', label: 'Drama' },
@@ -33,14 +34,16 @@ const YEAR_OPTIONS = [
 ];
 
 export function MovieFilters() {
-  const { sort, genre, year, query, updateFilter } = useMovieFilters();
+  const { sort, genre, year, query, updateFilter, resetFilters } = useMovieFilters();
 
   const handleSearch = useDebouncedCallback((value: string) => {
     updateFilter('query', value || undefined);
   }, 300);
 
+  const hasFilters = !!(sort !== 'popularity.desc' && sort) || !!genre || !!year || !!query;
+
   return (
-    <div className="mb-6 max-w-xl">
+    <div className="mb-6">
       <SearchInput defaultValue={query} onChange={handleSearch} placeholder="Search movies..." />
       <div className="flex flex-wrap gap-3 mt-4 mb-6">
         <p>Add filters: </p>
@@ -50,11 +53,12 @@ export function MovieFilters() {
           options={SORT_OPTIONS}
           ariaLabel="Sort movies"
         />
-        <Select
-          value={genre}
-          onChange={(value) => updateFilter('genre', value || undefined)}
+        <MultiSelect
+          values={genre ? genre.split(',') : []}
+          onChange={(values) => updateFilter('genre', values.length ? values.join(',') : undefined)}
           options={GENRE_OPTIONS}
           ariaLabel="Filter by genre"
+          placeholder="All Genres"
         />
         <Select
           value={year}
@@ -62,6 +66,11 @@ export function MovieFilters() {
           options={YEAR_OPTIONS}
           ariaLabel="Filter by year"
         />
+        {hasFilters && (
+          <Button variant="secondary" onClick={resetFilters}>
+            Reset filters
+          </Button>
+        )}
       </div>
     </div>
   );
