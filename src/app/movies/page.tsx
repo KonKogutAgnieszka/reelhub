@@ -34,7 +34,7 @@ export default async function MoviesPage({ searchParams }: MoviesPageProps) {
       </header>
       <MovieFilters />
       <MovieGrid movies={data.results} />
-      <Pagination currentPage={data.page} totalPages={data.totalPages} />
+      <Pagination key={data.page} currentPage={data.page} totalPages={data.totalPages} />
     </main>
   );
 }
