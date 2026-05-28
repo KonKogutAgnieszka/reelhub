@@ -87,7 +87,6 @@ function mapMovieDetail(raw: TmdbMovieDetailResponse): MovieDetail {
 }
 
 export async function fetchMovieDetail(id: number): Promise<MovieDetail> {
-  await new Promise((resolve) => setTimeout(resolve, 2000));
   const raw = await tmdbFetch<TmdbMovieDetailResponse>(`/movie/${id}`, {
     params: { language: 'en-US' },
   });

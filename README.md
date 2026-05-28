@@ -4,7 +4,7 @@ A movie browser built with Next.js and TypeScript, powered by the [TMDB API](htt
 Browse, filter, search and sort through movies with a clean, accessible UI.
 
 > **Status:** in development
-> **Live demo:** _coming soon_
+> **Live demo:** [reelhub-five.vercel.app](https://reelhub-five.vercel.app/)
 
 ---
 
@@ -17,6 +17,7 @@ Browse, filter, search and sort through movies with a clean, accessible UI.
 - [Available scripts](#-available-scripts)
 - [Project structure](#-project-structure)
 - [Architecture decisions](#-architecture-decisions)
+- [Accessibility](#-accessibility)
 - [Roadmap](#-roadmap)
 - [Attribution](#-attribution)
 
@@ -31,7 +32,7 @@ Browse, filter, search and sort through movies with a clean, accessible UI.
 - **API:** [The Movie Database (TMDB)](https://www.themoviedb.org/documentation/api)
 - **Validation:** [Zod](https://zod.dev/)
 - **Deployment:** [Vercel](https://vercel.com/)
-- **Testing:\*** [Vitest](https://vitest.dev/)
+- **Testing:** [Vitest](https://vitest.dev/)
 
 ## 🚀 Getting started
 
@@ -119,6 +120,19 @@ TMDB API returns data in snake_case, while the app internally uses camelCase. I 
 ---
 
 ​`
+
+## ♿ Accessibility
+
+Audited with Lighthouse on production build.
+
+![Lighthouse scores: Performance 94, Accessibility 95, Best Practices 100, SEO 100](./public/lighthouse.png)
+
+| Category       | Score |
+| -------------- | ----- |
+| Performance    | 94    |
+| Accessibility  | 95    |
+| Best Practices | 100   |
+| SEO            | 100   |
 
 ## 🧪 Testing
 
