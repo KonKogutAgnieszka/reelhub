@@ -8,8 +8,13 @@ export default defineConfig({
     environment: 'jsdom',
     globals: true,
     setupFiles: './tests/setup.ts',
+    env: {
+      TMDB_ACCESS_TOKEN: 'test_token',
+      TMDB_API_URL: 'https://api.themoviedb.org/3',
+      TMDB_IMAGE_URL: 'https://image.tmdb.org/t/p',
+    },
   },
   resolve: {
-    alias: { '@': path.resolve(__dirname, './src') },
+    alias: { '@': path.resolve(__dirname, './') },
   },
 });

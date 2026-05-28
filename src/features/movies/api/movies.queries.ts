@@ -29,7 +29,7 @@ interface TmdbPaginatedResponse<T> {
   total_results: number;
 }
 
-function mapMovie(raw: TmdbMovieResponse): Movie {
+export function mapMovie(raw: TmdbMovieResponse): Movie {
   return {
     id: raw.id,
     title: raw.title,
