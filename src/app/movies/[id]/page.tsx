@@ -1,5 +1,4 @@
 import Image from 'next/image';
-import { ButtonLink } from '@/src/shared/ui/button-link';
 import { notFound } from 'next/navigation';
 import { fetchMovieDetail, fetchRelatedMovies } from '@/src/features/movies/api/movies.queries';
 import { TmdbApiError } from '@/src/features/movies/api/tmdb-client';
@@ -29,23 +28,19 @@ export default async function MoviePage({ params }: MoviePageProps) {
   const posterUrl = movie.posterPath ? `https://image.tmdb.org/t/p/w500${movie.posterPath}` : null;
 
   return (
-    <main className="container mx-auto px-4 py-8">
-      <ButtonLink href="/movies" variant="primary" className="mb-6 inline-block">
-        ← Back to movies
-      </ButtonLink>
-
+    <>
       <div className="flex gap-8 mb-12">
         <div className="shrink-0">
           {posterUrl ? (
             <Image
               src={posterUrl}
               alt={`Poster for ${movie.title}`}
-              width={300}
-              height={450}
+              width={250}
+              height={375}
               className="rounded-lg"
             />
           ) : (
-            <div className="w-75 h-112.5 bg-gray-200 rounded-lg flex items-center justify-center text-gray-400">
+            <div className="w-62.5 h-93.75 bg-gray-400 rounded-lg flex items-center justify-center text-gray-400">
               No poster
             </div>
           )}
@@ -54,9 +49,9 @@ export default async function MoviePage({ params }: MoviePageProps) {
         <div>
           <h1 className="text-4xl font-bold mb-2">{movie.title}</h1>
 
-          {movie.tagline && <p className="text-gray-500 italic mb-4">{movie.tagline}</p>}
+          {movie.tagline && <p className="text-gray-400 italic mb-4">{movie.tagline}</p>}
 
-          <div className="flex gap-4 text-sm text-gray-600 mb-4">
+          <div className="flex gap-4 text-sm text-gray-400 mb-4">
             <span>⭐ {movie.voteAverage.toFixed(1)}</span>
             <span>{new Date(movie.releaseDate).getFullYear()}</span>
             {movie.runtime && <span>{movie.runtime} min</span>}
@@ -80,6 +75,6 @@ export default async function MoviePage({ params }: MoviePageProps) {
           <MovieGrid movies={related} />
         </section>
       )}
-    </main>
+    </>
   );
 }

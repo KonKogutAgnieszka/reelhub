@@ -53,7 +53,6 @@ export interface FetchMoviesParams {
 }
 
 export async function fetchMovies(params: FetchMoviesParams = {}): Promise<Paginated<Movie>> {
-  await new Promise((resolve) => setTimeout(resolve, 2000));
   const isSearch = !!params.query;
   const path = isSearch ? '/search/movie' : '/discover/movie';
 
@@ -88,6 +87,7 @@ function mapMovieDetail(raw: TmdbMovieDetailResponse): MovieDetail {
 }
 
 export async function fetchMovieDetail(id: number): Promise<MovieDetail> {
+  await new Promise((resolve) => setTimeout(resolve, 2000));
   const raw = await tmdbFetch<TmdbMovieDetailResponse>(`/movie/${id}`, {
     params: { language: 'en-US' },
   });
