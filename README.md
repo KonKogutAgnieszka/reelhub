@@ -47,7 +47,7 @@ Browse, filter, search and sort through movies with a clean, accessible UI.
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/YOUR_USERNAME/reelhub.git
+git clone https://github.com/KonKogutAgnieszka/reelhub
 cd reelhub
 
 # 2. Install dependencies
@@ -82,10 +82,11 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 src/
 ├── app/                        # routes, layouts
 │   ├── api/
-│   │   └── movies/             # Route Handler (TMDB proxy)
+│   │   └── movies/             # route Handler (TMDB proxy)
 │   └── movies/
-│       ├── [id]/               # Movie detail page
-│       └── page.tsx            # Movies list
+│       ├── [id]/               # movie detail page
+│       ├── movies-content.tsx  # Client Component (TanStack Query, filters, pagination)
+│       └── page.tsx            # movies list
 ├── features/                   # feature-based modules
 │   └── movies/
 │       ├── api/                # TMDB client and query
